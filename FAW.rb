@@ -33,17 +33,13 @@ if choice.to_s == "1"
   choice1 = gets.chomp
   if choice1 == "1"
     puts
-    puts "Enter type E.g HTML, PHP etc. If you don't know try guess"
-    puts "if you're wrong then just do it again with another type."
-    puts "Don't enter http://"
-    puts "Type: "
-    webtype = gets.chomp
-    puts "Use 'www.'"
+    puts "Use 'www.' and don't use 'http://'."
     puts "Enter target URL: "
     target = gets.chomp
     source = open('http://'+target).read
-    puts source
     File.open("#{target}.html", 'w') { |file| file.write(source) }
+    puts
+    puts "Webpage cloned and saved in active directory."
   end
 elsif choice.to_s == "2"
   puts "Credits"
