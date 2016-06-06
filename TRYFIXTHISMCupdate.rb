@@ -1,3 +1,4 @@
+require 'resolv'
 require 'colorize'
 require 'net/http'
 require'spidr'
@@ -34,6 +35,7 @@ if choice.to_s == "1"
   puts
   puts"1> Webpage cloning"
   puts"2> Email scrape from URL"
+  puts"3> URL Info grabber"
   choice1 = gets.chomp
   if choice1 == "1"
     puts
@@ -78,7 +80,25 @@ if choice.to_s == "1"
 
 end   
 end
-end  
+end
+  elsif choice1.to_s == "3"
+	puts
+	puts"Enter URL: "
+	target = gets.chomp.to_s
+	puts
+   	puts "Initializing...".red
+    	sleep 2
+  	puts "Loading ammunition...".blue
+ 	sleep 2
+        puts "Fire!".green
+        sleep 2
+	puts
+  	ip = Resolv.getaddress target
+	ips = Resolv.getaddresses target
+	hname = Resolv.getnames ip
+	puts "First IP listed: #{ip}"
+	puts "All listed IPs: #{ips}"
+	puts "All listed hostnames: #{hname}"
 end
 elsif choice.to_s == "2"
   puts "Credits"
