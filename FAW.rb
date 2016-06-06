@@ -29,7 +29,7 @@ if choice.to_s == "1"
   puts "_______"
   puts
   puts"1> Webpage cloning"
-  puts"2> empty"
+  puts"2> empty option"
   choice1 = gets.chomp
   if choice1 == "1"
     puts
