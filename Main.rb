@@ -110,9 +110,13 @@ begin
 	else
   	puts "Unknown response."
 	end
+	
 rescue Exception => e
-  File.open("except.log") do |f|
-    f.puts e.inspect
-    f.puts e.backtrace
-  end
+  time1 = Time.new
+  logtime = "Error Time : " + time1.inspect
+  File.open('error.log', 'a') { |file| file.write("\n"+logtime.to_s+"\n") }
+  err = e.inspect
+  File.open('error.log', 'a') { |file| file.write("\n"+err.to_s+"\n") }
+  err2 = e.backtrace
+  File.open('error.log', 'a') { |file| file.write("\n"+err2.to_s+"\n") }
 end
