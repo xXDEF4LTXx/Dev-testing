@@ -101,6 +101,8 @@ begin
 			puts "First IP listed: #{ip}"
 			puts "All listed IPs: #{ips}"
 			puts "All listed hostnames: #{hname}"
+		else
+			puts "Unknown response."
 		end
 	elsif choice.to_s == "2"
 		puts "Credits"
