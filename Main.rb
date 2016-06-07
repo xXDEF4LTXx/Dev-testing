@@ -45,11 +45,11 @@ begin
     			target = gets.chomp
     			puts
     			puts "Initializing...".red
-    			sleep 2
+    			sleep 1
     			puts "Loading ammunition...".blue
-    			sleep 2
+    			sleep 1
     			puts "Fire!".green
-    			sleep 2
+    			sleep 1
     			source = open('http://'+target).read
     			File.open("#{target}.html", 'w') { |file| file.write(source) }
     			puts
@@ -57,19 +57,20 @@ begin
   
   		elsif choice1.to_s == "2"
 			puts 
+			puts "Don't use 'http://'. Use 'www.'."
 			print"Enter site you want to scrape emails: "
 			target=gets.chomp
 			puts
    			puts "Initializing...".red
-    			sleep 2
+    			sleep 1
   			puts "Loading ammunition...".blue
- 			sleep 2
+ 			sleep 1
         		puts "Fire!".green
-        		sleep 2
+        		sleep 1
 			puts
-			uri = URI(target)
-			$stderr.puts "Scanning: #{uri.host}"
-			Spidr.site(target) do |spider|
+			uri = URI("http://"+target.to_s)
+			$stderr.puts "Scanning: #{uri}"
+			Spidr.site(uri) do |spider|
 			spider.every_page do |crawled_page|
 			puts "#{crawled_page.url}"
 			crawled_page.body.scan(/[\w\d]+[\w\d.-]@[\w\d.-]+\.\w{2,6}/).each do |address|
@@ -88,11 +89,11 @@ begin
 			target = gets.chomp.to_s
 			puts
    			puts "Initializing...".red
-    			sleep 2
+    			sleep 1
   			puts "Loading ammunition...".blue
- 			sleep 2
+ 			sleep 1
         		puts "Fire!".green
-        		sleep 2
+        		sleep 1
 			puts
   			ip = Resolv.getaddress target
 			ips = Resolv.getaddresses target
