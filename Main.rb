@@ -39,11 +39,11 @@ begin
   		puts"1> Webpage cloning\n".blue
   		puts"2> Email scrape from URL\n".blue
   		puts"3> URL Info grabber\n".blue
-      puts"4> SQLI Scanner: \n this module uses your entered google dork\n to search google for basic vulnerable\n websites.".blue
+      puts"4> SQLI Scanner: \n this module uses your entered google dork\n to search google for basic vulnerable\n websites.\n".blue
   		choice1 = gets.chomp
   		if choice1 == "1"
 			puts
-    			puts "Use 'www.' and don't use 'http://'.".blue
+    			puts "Use 'www.' and don't use 'http://'.".red
     			puts "Enter target URL: ".blue
     			target = gets.chomp
     			puts
@@ -61,7 +61,7 @@ begin
   		elsif choice1.to_s == "2"
 			puts
 			puts "Don't use 'http://'. Use 'www.'.".red
-			print"Enter site you want to scrape emails: ".red
+			print"Enter site you want to scrape emails: ".blue
 			target=gets.chomp
 			puts
    		puts "Initializing...".red
