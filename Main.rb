@@ -153,6 +153,8 @@ begin
             page.links.each do |link|
             page2 = agent.get("#{page.uri}&start=10")
             page2.links.each do |link|
+            page3 = agent.get("#{page.uri}&start=20")
+            page3.links.each do |link|
 
               if link.href.to_s =~/url.q/
                 str=link.href.to_s
