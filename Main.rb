@@ -193,6 +193,7 @@ begin
               end
             end
             end
+            end
             puts "All #{counting} vulnerable links have been entered into SQL.txt."
       rescue Exception => er
         time1 = Time.new
