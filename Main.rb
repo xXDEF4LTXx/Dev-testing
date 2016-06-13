@@ -4,10 +4,12 @@ begin
   require 'mechanize'
 	require 'resolv'
 	require 'colorize'
+  require 'unirest'
 	require 'net/http'
 	require 'spidr'
 	require 'open-uri'
 	require 'uri'
+  require 'json'
 	require 'csv'
 
 	puts
@@ -37,11 +39,13 @@ begin
   		puts "Modules - Type module number.".blue
   		puts "_____________________________\n".red
   		puts
-  		puts"1> Webpage cloning\n".blue
-  		puts"2> Email scrape from URL\n".blue
-  		puts"3> URL Info grabber\n".blue
+  		puts"1> Webpage cloning.\n".blue
+  		puts"2> Email scrape from URL.\n".blue
+  		puts"3> URL Info grabber.\n".blue
       puts"4> SQLI Scanner: \n this module uses your entered google dork\n to search google for basic vulnerable\n websites.\n".blue
       puts"5> Check online databases to see if your \ninformation has been breached.\nA breach means that your entered\nusername or email has appeared in\nsome leaked details.\nA breach can be sensitive or non.\nThis means plain-text passwords etc.\n".blue
+      puts"6> Create a dox automatically.\nThis requires sufficient information \nbefore creation of dox.\n".blue
+      puts"7> Phone number info.\nIncludes blacklist check.\n".blue
       choice1 = gets.chomp
   		if choice1 == "1"
 			puts
@@ -205,14 +209,18 @@ begin
         File.open('SQLerror.log', 'a') { |file| file.write("\n"+err2.to_s+"\n") }
       end
     elsif choice1.to_s == "5"
-      puts "\nEnter your username or email address to be checked\nthrough the databases:\n".blue
-      checkdetail=gets.chomp.to_s
-      puts "Enter file name to save results to:\n"
-      filename=gets.chomp
-      url=URI.parse("https://haveibeenpwned.com/api/v2/breachedaccount/#{checkdetail}")
-      output = open(url, {ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE})
-      result = JSON.parse output.readlines.join("")
-      puts "Breaches".green
+      begin
+        puts "\nEnter your username or email address to be checked\nthrough the databases:\n".blue
+        checkdetail=gets.chomp.to_s
+        puts "\nEnter file name to save results to:\n\n"
+        filename=gets.chomp
+        url=URI.parse("https://haveibeenpwned.com/api/v2/breachedaccount/#{checkdetail}")
+        output = open(url, {ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE})
+        result = JSON.parse output.readlines.join("")
+      rescue OpenURI::HTTPError => err
+        puts "\nHTTP Error -- Likely that no results were found for entered username/email."
+      end
+      puts "\nBreaches".green
       puts "--------\n".red
       coun = result.count
       count = coun +=1
@@ -236,6 +244,75 @@ begin
         File.open("#{filename}.txt", 'a') { |file| file.write("\nData sensitive in breach number #{breachnum}? #{result[x]['IsSensitive']}\n") }
         x+=1
       end
+    elsif choice1.to_s == "6"
+      puts "\n\nEnter Target First Name:\n".blue
+      fname=gets.chomp
+      puts "Enter Target Last Name:\n".blue
+      lname=gets.chomp
+      puts "Enter A Keyword For Target:\n".blue
+      keyword=gets.chomp
+      #puts "Enter Target Workplace:\n"
+      #wplace=gets.chomp
+      response = Unirest.get "https://rocketreach-co.p.mashape.com/search?api_key=3eck5cb4abbad6bca90f27640c3632706ea7&name=#{fname}+#{lname}&keyword=#{keyword}",
+        headers:{
+          "X-Mashape-Key" => "ErPi7Y0jiBmshsvjjdPhfeksc7ZBp1VBeiXjsnyDawvFN2EFH9",
+          "Accept" => "application/json"
+        }
+
+      parse = response.body
+      File.open("Dox.txt", 'a') { |file| file.write("\n#{Time.now}\n-------------------------\n") }
+      puts "Response: #{response.code}".green
+      File.open("Dox.txt", 'a') { |file| file.write("\nResponse: #{response.code}\n") }
+      counts = parse['profiles'].count
+      x=1
+      while x < counts
+        puts "\nResult #{x}".green
+        puts "-----------".blue
+        File.open("Dox.txt", 'a') { |file| file.write("\nResult #{x}\n-----------\n") }
+        puts "\nID: #{parse['profiles'][x]['id']}".green
+        File.open("Dox.txt", 'a') { |file| file.write("\nID: #{parse['profiles'][x]['id']}\n") }
+        puts "\nName: #{parse['profiles'][x]['name']}".green
+        File.open("Dox.txt", 'a') { |file| file.write("\nName: #{parse['profiles'][x]['name']}\n") }
+        puts "\nPic: #{parse['profiles'][x]['profile_pic']}".green
+        File.open("Dox.txt", 'a') { |file| file.write("\nPic: #{parse['profiles'][x]['profile_pic']}\n") }
+        puts "\nLinks: #{parse['profiles'][x]['links']}".green
+        File.open("Dox.txt", 'a') { |file| file.write("\nLinks: #{parse['profiles'][x]['links']}\n") }
+        puts "\nPostal Code: #{parse['profiles'][x]['postal_code']}".green
+        File.open("Dox.txt", 'a') { |file| file.write("\nPostal Code: #{parse['profiles'][x]['postal_code']}\n") }
+        puts "\nCity: #{parse['profiles'][x]['city']}".green
+        File.open("Dox.txt", 'a') { |file| file.write("\nCity: #{parse['profiles'][x]['city']}\n") }
+        puts "\nLocation: #{parse['profiles'][x]['location']}".green
+        File.open("Dox.txt", 'a') { |file| file.write("\nLocation: #{parse['profiles'][x]['location']}\n") }
+        puts "\nRegion: #{parse['profiles'][x]['region']}".green
+        File.open("Dox.txt", 'a') { |file| file.write("\nRegion: #{parse['profiles'][x]['region']}\n") }
+        puts "\nTitle: #{parse['profiles'][x]['current_title']}".green
+        File.open("Dox.txt", 'a') { |file| file.write("\nTitle: #{parse['profiles'][x]['current_title']}\n") }
+        puts "\nCurrent Employer: #{parse['profiles'][x]['current_employer']}".green
+        File.open("Dox.txt", 'a') { |file| file.write("\nCurrent Employer: #{parse['profiles'][x]['current_employer']}\n") }
+        puts "\nSummary: #{parse['profiles'][x]['summary']}\n\n".gsub('</b>', '').gsub('<b>', '').gsub('<br>', '').gsub('&#39', '').gsub('&nbsp', '').green
+        write = "Summary: #{parse['profiles'][x]['summary']}".gsub('</b>', '').gsub('<b>', '').gsub('<br>', '').gsub('&#39', '').gsub('&nbsp', '')
+        File.open("Dox.txt", 'a') { |file| file.write("\n #{write}\n") }
+        x+=1
+      end
+      puts "Saved response to 'Dox.txt'.".green
+    elsif choice1.to_s == "7"
+      puts "\n\nEnter phone number with '+(country_code).\nExample: +1-2345-678-9.\nDon't use dashes '-'.\nNumber:\n\n".blue
+      phone=gets.chomp.gsub('-', '').gsub(' ', '').gsub('+', '')
+      response = Unirest.get "https://phone-validation.p.mashape.com/%2B#{phone}",
+        headers:{
+          "X-Mashape-Key" => "kg23sg9Hh2mshCUYoY3CTvJ2tScVp1g5kTqjsnLhVRtxLdZVg5",
+          "Accept" => "application/json"
+        }
+
+      parse = JSON.parse(response.raw_body)
+      puts "Status: #{parse['status']}\n".green
+      puts "---\n".blue
+      puts "Phone: #{parse['phone']}\n".green
+      puts "International Number: #{parse['international']}\n".green
+      puts "National Number: #{parse['national']}\n".green
+      puts "Country Code: #{parse['country_code']}\n".green
+      puts "Blacklisted: #{parse['blacklisted']}\n".green
+
     else
 			puts "Unknown response.".red
 		end
