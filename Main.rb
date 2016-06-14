@@ -57,6 +57,7 @@ begin
       puts"8> IP To Location.\n".blue
       puts"9> Port checker for IP or website.\n".blue
       puts"10> Fake info generator.\n".blue
+      puts"11> Xbox Account Info By Gamertag.\n".blue
       choice1 = gets.chomp
   		if choice1 == "1"
 			puts
@@ -434,6 +435,65 @@ begin
       puts
       puts w = "Secondary Phone Number: #{Faker::PhoneNumber.cell_phone}".colorize(:color => :light_blue, :background => :red)
       File.open("#{filename}.txt", 'a') { |file| file.write("\n #{w}\n".gsub("[0;94;41m", "").gsub('[0m', '')) }
+    elsif choice1.to_s == "11"
+      puts "\n\nEnter Gamer Tag to get information:\n\n".blue
+      gt=gets.chomp
+
+      response = Unirest.get "https://xboxapi.com/v2/xuid/#{gt}",
+        headers:{
+          "X-Auth" => "21799586ef48d67aee85b3493c4d78a6516bfc43",
+          "Content-Type" => "application/json"
+        }
+
+      xuid =  response.body
+      response2 = Unirest.get "https://xboxapi.com/v2/#{xuid}/profile",
+        headers:{
+          "X-Auth" => "21799586ef48d67aee85b3493c4d78a6516bfc43",
+          "Content-Type" => "application/json"
+        }
+      response3 = Unirest.get "https://xboxapi.com/v2/#{xuid}/presence",
+        headers:{
+          "X-Auth" => "21799586ef48d67aee85b3493c4d78a6516bfc43",
+          "Content-Type" => "application/json"
+        }
+      response4 = Unirest.get "https://xboxapi.com/v2/#{xuid}/activity",
+        headers:{
+          "X-Auth" => "21799586ef48d67aee85b3493c4d78a6516bfc43",
+          "Content-Type" => "application/json"
+        }
+      response5 = Unirest.get "https://xboxapi.com/v2/#{xuid}/xbox360games",
+        headers:{
+          "X-Auth" => "21799586ef48d67aee85b3493c4d78a6516bfc43",
+          "Content-Type" => "application/json"
+        }
+
+
+      File.open("Activity.txt", 'a') { |file| file.write("\n#{Time.now}\n#{response4.raw_body}\n\n") }
+      parse3 = JSON.parse(response5.raw_body)
+      parse = JSON.parse(response2.raw_body)
+      parse2 = JSON.parse(response3.raw_body)
+      count = parse3['titles'].count
+      x=0
+      puts "\nBasic info".blue
+      puts "----------\n".red
+      puts "\nGamertag: #{parse['Gamertag']}\n".green
+      puts "XUID: #{xuid}\n".green
+      puts "Account type: #{parse['AccountTier']}\n".green
+      puts "Gamerscore: #{parse['Gamerscore']}\n".green
+      puts "Gamer pic: #{parse['GameDisplayPicRaw']}\n".green
+      puts "Tenure level: #{parse['TenureLevel']}\n".green
+      puts "Xbox One rep: #{parse['XboxOneRep']}\n".green
+      puts "Sponsored user: #{parse['isSponsoredUser']}\n".green
+      puts "Online/Offline: #{parse2['state']}".green
+      puts
+      puts "Games".blue
+      puts "-----".red
+      while x<count
+       puts "#{parse3['titles'][x]['name']}".green
+       x+=1
+      end
+      puts "\nActivity saved to 'Activity.txt'.".blue
+
     else
 			puts "Unknown response.".red
 		end
