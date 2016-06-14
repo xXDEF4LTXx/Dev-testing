@@ -1,16 +1,17 @@
 begin
   require 'rubygems'
   require 'fileutils'
+  require 'faker'
   require 'mechanize'
-	require 'resolv'
-	require 'colorize'
+  require 'resolv'
+  require 'colorize'
   require 'unirest'
-	require 'net/http'
-	require 'spidr'
-	require 'open-uri'
-	require 'uri'
+  require 'net/http'
+  require 'spidr'
+  require 'open-uri'
+  require 'uri'
   require 'json'
-	require 'csv'
+  require 'csv'
 
 	puts
 	puts"FFFFFFFFFFFFFFFFFFFFFF     AAA    WWWWWWWW                           WWWWWWWW".blue
@@ -46,6 +47,9 @@ begin
       puts"5> Check online databases to see if your \ninformation has been breached.\nA breach means that your entered\nusername or email has appeared in\nsome leaked details.\nA breach can be sensitive or non.\nThis means plain-text passwords etc.\n".blue
       puts"6> Create a dox automatically.\nThis requires sufficient information \nbefore creation of dox.\n".blue
       puts"7> Phone number info.\nIncludes blacklist check.\n".blue
+      puts"8> IP To Location.\n".blue
+      puts"9> Port checker for IP or website.\n".blue
+      puts"10> Fake info generator.\n".blue
       choice1 = gets.chomp
   		if choice1 == "1"
 			puts
@@ -313,6 +317,116 @@ begin
       puts "Country Code: #{parse['country_code']}\n".green
       puts "Blacklisted: #{parse['blacklisted']}\n".green
 
+    elsif choice1.to_s == "8"
+      puts"\n\nIP To Collect Info:\n\n".green
+
+      address=gets.chomp
+      response = Unirest.get "https://ipapi.co/#{address}/json/"
+      if address == ""
+        address = "your ip (defaulted)"
+      end
+
+      puts "\nResponse code: #{response.code}\n".blue
+      puts "\nResults for #{address}".green
+      puts "-------------------------\n".red
+      parse = response.body
+      puts "IP Timezone: #{parse['timezone']}\n".green
+      puts "IP Country: #{parse['country']}\n".green
+      puts "IP Region: #{parse['region']}\n".green
+      puts "IP City: #{parse['city']}\n".green
+      puts "IP Postal Code: #{parse['postal']}\n".green
+      puts "IP Latitude: #{parse['latitude']}\n".green
+      puts "IP Longitude: #{parse['longitude']}\n".green
+    elsif choice1.to_s == "9"
+      puts "\n\nEnter host:\n\n".blue
+      host=gets.chomp
+      response = Unirest.get "http://pro.viewdns.info/portscan/?host=#{host}&apikey=6dbae2733751397594a7dd998f66d28c05b0c9b1&output=json"
+
+      x=0
+      parse = JSON.parse(response.raw_body)
+      puts "\nResults for #{host}".green
+      puts "--------------------------".red
+      while x<13
+        if parse['response']['port'][x]['status'].to_s == "closed"
+          puts "\nPort: #{parse['response']['port'][x]['number']} Service: #{parse['response']['port'][x]['service']} Status: #{parse['response']['port'][x]['status']}\n".red
+        elsif parse['response']['port'][x]['status'].to_s == "open"
+          puts "\nPort: #{parse['response']['port'][x]['number']} Service: #{parse['response']['port'][x]['service']} Status: #{parse['response']['port'][x]['status']}\n".green
+        else
+          puts 'Error.'
+        end
+        x+=1
+      end
+    elsif choice1.to_s == "10"
+      puts "\n\nFile (name) to save details to:\n\n".blue
+      filename=gets.chomp
+      puts a = "\nFirst Name: #{Faker::Name.first_name.to_s}".colorize(:color => :light_blue, :background => :red)
+      File.open("#{filename}.txt", 'a') { |file| file.write("\n #{a}\n".gsub("[0;94;41m", "").gsub('[0m', '')) }
+      puts
+      puts b = "Last Name: #{Faker::Name.last_name.to_s}".colorize(:color => :light_blue, :background => :red)
+      File.open("#{filename}.txt", 'a') { |file| file.write("\n #{b}\n".gsub("[0;94;41m", "").gsub('[0m', '')) }
+      puts
+      puts c = "Title: #{Faker::Name.title}".colorize(:color => :light_blue, :background => :red)
+      File.open("#{filename}.txt", 'a') { |file| file.write("\n #{c}\n".gsub("[0;94;41m", "").gsub('[0m', '')) }
+      puts
+      puts d = "Email: #{Faker::Internet.email}".colorize(:color => :light_blue, :background => :red)
+      File.open("#{filename}.txt", 'a') { |file| file.write("\n #{d}\n".gsub("[0;94;41m", "").gsub('[0m', '')) }
+      puts
+      puts e = "Secondary Email: #{Faker::Internet.email}".colorize(:color => :light_blue, :background => :red)
+      File.open("#{filename}.txt", 'a') { |file| file.write("\n #{e}\n".gsub("[0;94;41m", "").gsub('[0m', '')) }
+      puts
+      puts f = "City: #{Faker::Address.city}".colorize(:color => :light_blue, :background => :red)
+      File.open("#{filename}.txt", 'a') { |file| file.write("\n #{f}\n".gsub("[0;94;41m", "").gsub('[0m', '')) }
+      puts
+      puts g = "Street Name: #{Faker::Address.street_name}".colorize(:color => :light_blue, :background => :red)
+      File.open("#{filename}.txt", 'a') { |file| file.write("\n #{g}\n".gsub("[0;94;41m", "").gsub('[0m', '')) }
+      puts
+      puts h = "Street Address: #{Faker::Address.street_address}".colorize(:color => :light_blue, :background => :red)
+      File.open("#{filename}.txt", 'a') { |file| file.write("\n #{h}\n".gsub("[0;94;41m", "").gsub('[0m', '')) }
+      puts
+      puts i = "Secondary Address: #{Faker::Address.secondary_address}".colorize(:color => :light_blue, :background => :red)
+      File.open("#{filename}.txt", 'a') { |file| file.write("\n #{i}\n".gsub("[0;94;41m", "").gsub('[0m', '')) }
+      puts
+      puts j = "Zip Code: #{Faker::Address.zip_code}".colorize(:color => :light_blue, :background => :red)
+      File.open("#{filename}.txt", 'a') { |file| file.write("\n #{j}\n".gsub("[0;94;41m", "").gsub('[0m', '')) }
+      puts
+      puts k = "Secondary Zip Code: #{Faker::Address.zip}".colorize(:color => :light_blue, :background => :red)
+      File.open("#{filename}.txt", 'a') { |file| file.write("\n #{k}\n".gsub("[0;94;41m", "").gsub('[0m', '')) }
+      puts
+      puts l = "Postcode: #{Faker::Address.postcode}".colorize(:color => :light_blue, :background => :red)
+      File.open("#{filename}.txt", 'a') { |file| file.write("\n #{l}\n".gsub("[0;94;41m", "").gsub('[0m', '')) }
+      puts
+      puts m = "State: #{Faker::Address.state}".colorize(:color => :light_blue, :background => :red)
+      File.open("#{filename}.txt", 'a') { |file| file.write("\n #{m}\n".gsub("[0;94;41m", "").gsub('[0m', '')) }
+      puts
+      puts n = "Country: #{Faker::Address.country}".colorize(:color => :light_blue, :background => :red)
+      File.open("#{filename}.txt", 'a') { |file| file.write("\n #{n}\n".gsub("[0;94;41m", "").gsub('[0m', '')) }
+      puts
+      puts o = "Bitcoin Address: #{Faker::Bitcoin.address}".colorize(:color => :light_blue, :background => :red)
+      File.open("#{filename}.txt", 'a') { |file| file.write("\n #{o}\n".gsub("[0;94;41m", "").gsub('[0m', '')) }
+      puts
+      puts zz = "Bitcoin Testnet Address: #{Faker::Bitcoin.testnet_address}".colorize(:color => :light_blue, :background => :red)
+      File.open("#{filename}.txt", 'a') { |file| file.write("\n #{zz}\n".gsub("[0;94;41m", "").gsub('[0m', '')) }
+      puts
+      puts q = "Credit Card Number: #{Faker::Business.credit_card_number}".colorize(:color => :light_blue, :background => :red)
+      File.open("#{filename}.txt", 'a') { |file| file.write("\n #{q}\n".gsub("[0;94;41m", "").gsub('[0m', '')) }
+      puts
+      puts r = "Credit Card Expiry: #{Faker::Business.credit_card_expiry_date}".colorize(:color => :light_blue, :background => :red)
+      File.open("#{filename}.txt", 'a') { |file| file.write("\n #{r}\n".gsub("[0;94;41m", "").gsub('[0m', '')) }
+      puts
+      puts s = "Credit Card Type: #{Faker::Business.credit_card_type}".colorize(:color => :light_blue, :background => :red)
+      File.open("#{filename}.txt", 'a') { |file| file.write("\n #{s}\n".gsub("[0;94;41m", "").gsub('[0m', '')) }
+      puts
+      puts t = "Company Name: #{Faker::Company.name}".colorize(:color => :light_blue, :background => :red)
+      File.open("#{filename}.txt", 'a') { |file| file.write("\n #{t}\n".gsub("[0;94;41m", "").gsub('[0m', '')) }
+      puts
+      puts u = "Website: #{Faker::Internet.domain_name}".colorize(:color => :light_blue, :background => :red)
+      File.open("#{filename}.txt", 'a') { |file| file.write("\n #{u}\n".gsub("[0;94;41m", "").gsub('[0m', '')) }
+      puts
+      puts v = "Phone Number: #{Faker::Number.number(10)}".colorize(:color => :light_blue, :background => :red)
+      File.open("#{filename}.txt", 'a') { |file| file.write("\n #{v}\n".gsub("[0;94;41m", "").gsub('[0m', '')) }
+      puts
+      puts w = "Secondary Phone Number: #{Faker::PhoneNumber.cell_phone}".colorize(:color => :light_blue, :background => :red)
+      File.open("#{filename}.txt", 'a') { |file| file.write("\n #{w}\n".gsub("[0;94;41m", "").gsub('[0m', '')) }
     else
 			puts "Unknown response.".red
 		end
