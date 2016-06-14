@@ -3,15 +3,15 @@ begin
   require 'fileutils'
   require 'faker'
   require 'mechanize'
-  require 'resolv'
-  require 'colorize'
+	require 'resolv'
+	require 'colorize'
   require 'unirest'
-  require 'net/http'
-  require 'spidr'
-  require 'open-uri'
-  require 'uri'
+	require 'net/http'
+	require 'spidr'
+	require 'open-uri'
+	require 'uri'
   require 'json'
-  require 'csv'
+	require 'csv'
 
 	puts
 	puts"FFFFFFFFFFFFFFFFFFFFFF     AAA    WWWWWWWW                           WWWWWWWW".blue
@@ -30,7 +30,14 @@ begin
 	puts"F::::::::FF   A:::::A               A:::::A W:::::W         W:::::W".blue
 	puts"F::::::::FF  A:::::A                 A:::::A W:::W           W:::W".blue
 	puts"FFFFFFFFFFF AAAAAAA                   AAAAAAA WWW             WWW".blue
-	#####
+  response = Unirest.post "https://andruxnet-random-famous-quotes.p.mashape.com/?cat=famous",
+    headers:{
+      "X-Mashape-Key" => "kg23sg9Hh2mshCUYoY3CTvJ2tScVp1g5kTqjsnLhVRtxLdZVg5",
+      "Content-Type" => "application/x-www-form-urlencoded",
+      "Accept" => "application/json"
+    }
+  parse = JSON.parse(response.raw_body)
+  puts"\n#{parse['quote']} \n- #{parse['author']}"
 	puts
 	puts
 	puts "1) Modules 2) Credits - Type your option number.\n".green
