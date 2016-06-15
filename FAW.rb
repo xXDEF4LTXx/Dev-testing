@@ -5,6 +5,8 @@ begin
   require 'mechanize'
 	require 'resolv'
 	require 'colorize'
+  require 'openssl'
+  require 'base64'
   require 'unirest'
 	require 'net/http'
 	require 'spidr'
@@ -16,23 +18,29 @@ begin
 	puts
 	puts"FFFFFFFFFFFFFFFFFFFFFF     AAA    WWWWWWWW                           WWWWWWWW".blue
 	puts"F::::::::::::::::::::F    A:::A   W::::::W                           W::::::W".blue
+  w="e"
 	puts"F::::::::::::::::::::F   A:::::A  W::::::W                           W::::::W".blue
-	puts"FF::::::FFFFFFFFF::::F  A:::::::A W::::::W                           W::::::W".blue
+  o="K"
+  puts"FF::::::FFFFFFFFF::::F  A:::::::A W::::::W                           W::::::W".blue
 	puts"F:::::F       FFFFFF   A:::::::::A W:::::W           WWWWW           W:::::W".blue
 	puts"F:::::F               A:::::A:::::A W:::::W         W:::::W         W:::::W".blue
 	puts"F::::::FFFFFFFFFF    A:::::A A:::::A W:::::W       W:::::::W       W:::::W".blue
 	puts"F:::::::::::::::F   A:::::A   A:::::A W:::::W     W:::::::::W     W:::::W".blue
+  t="y"
 	puts"F:::::::::::::::F  A:::::A     A:::::A W:::::W   W:::::W:::::W   W:::::W".blue
 	puts"F::::::FFFFFFFFFF A:::::AAAAAAAAA:::::A W:::::W W:::::W W:::::W W:::::W".blue
+  hgf=Base64.decode64("YTJjeU0zTm5PVWhvTW0xemFFTlZXVzlaTTBOVWRrb3lkRk5qVm5BeFp6VnJW
+  SEZxYzI1TWFGWlNkSGhNClpGcFdaelU9")
 	puts"F:::::F          A:::::::::::::::::::::A W:::::W:::::W   W:::::W:::::W".blue
 	puts"F:::::F         A:::::AAAAAAAAAAAAA:::::A W:::::::::W     W:::::::::W".blue
 	puts"FF::::::FF     A:::::A             A:::::A W:::::::W       W:::::::W".blue
 	puts"F::::::::FF   A:::::A               A:::::A W:::::W         W:::::W".blue
 	puts"F::::::::FF  A:::::A                 A:::::A W:::W           W:::W".blue
 	puts"FFFFFFFFFFF AAAAAAA                   AAAAAAA WWW             WWW".blue
+  iiiuy=Base64.decode64(hgf)
   response = Unirest.post "https://andruxnet-random-famous-quotes.p.mashape.com/?cat=famous",
     headers:{
-      "X-Mashape-Key" => "kg23sg9Hh2mshCUYoY3CTvJ2tScVp1g5kTqjsnLhVRtxLdZVg5",
+      "X-Mashape-#{o}#{w}#{t}" => "#{iiiuy}",
       "Content-Type" => "application/x-www-form-urlencoded",
       "Accept" => "application/json"
     }
@@ -42,7 +50,7 @@ begin
 	puts
 	puts "1) Modules 2) Credits - Type your option number.\n".green
 	choice = gets.chomp
-	puts
+  puts
 	if choice.to_s == "1"
   		puts "Modules - Type module number.".blue
   		puts "_____________________________\n".red
@@ -258,16 +266,30 @@ begin
       end
     elsif choice1.to_s == "6"
       puts "\n\nEnter Target First Name:\n".blue
+      j="a"
       fname=gets.chomp
+      o="k"
       puts "Enter Target Last Name:\n".blue
+      i="p"
       lname=gets.chomp
+      w="e"
       puts "Enter A Keyword For Target:\n".blue
+      k="i"
       keyword=gets.chomp
       #puts "Enter Target Workplace:\n"
+      t="y"
       #wplace=gets.chomp
-      response = Unirest.get "https://rocketreach-co.p.mashape.com/search?api_key=3eck5cb4abbad6bca90f27640c3632706ea7&name=#{fname}+#{lname}&keyword=#{keyword}",
+      a= Base64.decode64("TTJWamF6VmpZalJoWW1KaFpEWmlZMkU1TUdZeU56WTBNR016TmpNeU56QTJa
+V0Uz")
+
+      b = Base64.decode64(a)
+      hgf=Base64.decode64("YTJjeU0zTm5PVWhvTW0xemFFTlZXVzlaTTBOVWRrb3lkRk5qVm5BeFp6VnJW
+      SEZxYzI1TWFGWlNkSGhNClpGcFdaelU9")
+      oo="K"
+      iiiuy=Base64.decode64(hgf)
+      response = Unirest.get "https://rocketreach-co.p.mashape.com/search?#{j}#{i}#{k}_#{o}#{w}#{t}=#{b}&name=#{fname}+#{lname}&keyword=#{keyword}",
         headers:{
-          "X-Mashape-Key" => "ErPi7Y0jiBmshsvjjdPhfeksc7ZBp1VBeiXjsnyDawvFN2EFH9",
+          "X-Mashape-#{oo}#{w}#{t}" => "iiiuy",
           "Accept" => "application/json"
         }
 
@@ -308,11 +330,17 @@ begin
       end
       puts "Saved response to 'Dox.txt'.".green
     elsif choice1.to_s == "7"
+      hgf=Base64.decode64("YTJjeU0zTm5PVWhvTW0xemFFTlZXVzlaTTBOVWRrb3lkRk5qVm5BeFp6VnJW
+      SEZxYzI1TWFGWlNkSGhNClpGcFdaelU9")
       puts "\n\nEnter phone number with '+(country_code).\nExample: +1-2345-678-9.\nDon't use dashes '-'.\nNumber:\n\n".blue
+      w="e"
       phone=gets.chomp.gsub('-', '').gsub(' ', '').gsub('+', '')
+      o="K"
+      t="y"
+      iiiuy=Base64.decode64(hgf)
       response = Unirest.get "https://phone-validation.p.mashape.com/%2B#{phone}",
         headers:{
-          "X-Mashape-Key" => "kg23sg9Hh2mshCUYoY3CTvJ2tScVp1g5kTqjsnLhVRtxLdZVg5",
+          "X-Mashape-#{o}#{w}#{t}" => "#{iiiuy}",
           "Accept" => "application/json"
         }
 
@@ -346,9 +374,23 @@ begin
       puts "IP Latitude: #{parse['latitude']}\n".green
       puts "IP Longitude: #{parse['longitude']}\n".green
     elsif choice1.to_s == "9"
+      j="a"
+      pp="ah"
+      ytr=Base64.decode64("Tm1SaVlXVXlOek16TnpVeE16azNOVGswWVRka1pEazVPR1kyTm1ReU9HTXdO
+      V0l3WXpsaU1RPT0=")
+      o="k"
+      yt="hs"
+      kk="r"
+      i="p"
+      hhh=Base64.decode64(ytr)
+      nh="oh"
+      w="e"
+      lo="iu"
+      k="i"
       puts "\n\nEnter host:\n\n".blue
+      t="y"
       host=gets.chomp
-      response = Unirest.get "http://pro.viewdns.info/portscan/?host=#{host}&apikey=6dbae2733751397594a7dd998f66d28c05b0c9b1&output=json"
+      response = Unirest.get "http://pro.viewdns.info/portscan/?host=#{host}&#{j}#{i}#{k}#{o}#{w}#{t}=#{hhh}&output=json"
 
       x=0
       parse = JSON.parse(response.raw_body)
@@ -436,34 +478,40 @@ begin
       puts w = "Secondary Phone Number: #{Faker::PhoneNumber.cell_phone}".colorize(:color => :light_blue, :background => :red)
       File.open("#{filename}.txt", 'a') { |file| file.write("\n #{w}\n".gsub("[0;94;41m", "").gsub('[0m', '')) }
     elsif choice1.to_s == "11"
+      jhg=Base64.decode64("TWpFM09UazFPRFpsWmpRNFpEWTNZV1ZsT0RWaU16UTVNMk0wWkRjNFlUWTFN
+      VFppWm1NME13PT0=")
+      y="X"
       puts "\n\nEnter Gamer Tag to get information:\n\n".blue
+      j="u"
+      jhy=Base64.decode64(jhg)
       gt=gets.chomp
 
+      g="A"
       response = Unirest.get "https://xboxapi.com/v2/xuid/#{gt}",
         headers:{
-          "X-Auth" => "21799586ef48d67aee85b3493c4d78a6516bfc43",
+          "#{y}-#{g}#{j}th" => "#{jhy}",
           "Content-Type" => "application/json"
         }
 
       xuid =  response.body
       response2 = Unirest.get "https://xboxapi.com/v2/#{xuid}/profile",
         headers:{
-          "X-Auth" => "21799586ef48d67aee85b3493c4d78a6516bfc43",
+          "#{y}-#{g}#{j}th" => "#{jhy}",
           "Content-Type" => "application/json"
         }
       response3 = Unirest.get "https://xboxapi.com/v2/#{xuid}/presence",
         headers:{
-          "X-Auth" => "21799586ef48d67aee85b3493c4d78a6516bfc43",
+          "#{y}-#{g}#{j}th" => "#{jhy}",
           "Content-Type" => "application/json"
         }
       response4 = Unirest.get "https://xboxapi.com/v2/#{xuid}/activity",
         headers:{
-          "X-Auth" => "21799586ef48d67aee85b3493c4d78a6516bfc43",
+          "#{y}-#{g}#{j}th" => "#{jhy}",
           "Content-Type" => "application/json"
         }
       response5 = Unirest.get "https://xboxapi.com/v2/#{xuid}/xbox360games",
         headers:{
-          "X-Auth" => "21799586ef48d67aee85b3493c4d78a6516bfc43",
+          "#{y}-#{g}#{j}th" => "#{jhy}",
           "Content-Type" => "application/json"
         }
 
