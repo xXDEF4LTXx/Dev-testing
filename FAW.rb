@@ -169,7 +169,7 @@ begin
             puts "Overuse of this module will block your ip with google captcha.\nUsing a VPN is recommended.".red
             puts
             puts "Enter SQLI Dork: \n".blue
-            dork = gets.chomp
+            dork = gets.chomp.to_s
             puts
             google_form.q = dork.to_s
 
@@ -209,9 +209,7 @@ begin
                   end
                 rescue OpenURI::HTTPError => err
                       puts "Error in link or network\n".red
-                      elog = "Error2.log"
-                      write = "\n #{err} \n"
-                      File.open(elog, 'a') { |file| file.write(write) }
+                      File.open("error2.log", 'a') { |file| file.write("\n\n#{err}\n\n") }
                 end
 
               end
@@ -222,11 +220,11 @@ begin
       rescue Exception => er
         time1 = Time.new
         logtime = "Error Time : " + time1.inspect
-        File.open('SQLerror.log', 'a') { |file| file.write("\n"+logtime.to_s+"\n") }
+        #File.open('SQLerror.log', 'a') { |file| file.write("\n"+logtime.to_s+"\n") }
         err = er.inspect
-        File.open('SQLerror.log', 'a') { |file| file.write("\n"+err.to_s+"\n") }
         err2 = er.backtrace
-        File.open('SQLerror.log', 'a') { |file| file.write("\n"+err2.to_s+"\n") }
+        err3 = "#{err}\n\n#{err2}".to_s
+        File.open("SQLError.log", 'a') {|file| file.write("\n\n#{err3}\n\n")}
       end
     elsif choice1.to_s == "5"
       begin
@@ -556,11 +554,28 @@ V0Uz")
 	end
 
 rescue Exception => e
+
   time1 = Time.new
   logtime = "Error Time : " + time1.inspect
-  File.open('error.log', 'a') { |file| file.write("\n"+logtime.to_s+"\n") }
+  #File.open('error.log', 'a') { |file| file.write("#{logtime.to_s}::::::") }
   err = e.inspect
-  File.open('error.log', 'a') { |file| file.write("\n"+err.to_s+"\n") }
   err2 = e.backtrace
-  File.open('error.log', 'a') { |file| file.write("\n"+err2.to_s+"\n") }
+  arr = Array.new
+  pkf = 'dfghuytgh.pem';
+  public_key = OpenSSL::PKey::RSA.new(File.read(pkf))
+  File.open("error.log", 'w') {|file| file.write("#{err}\n#{err2}")}
+  File.open("error.log").each_line do |a|
+  arr.push(a)
+  File.open("error.log", 'w') {|file| file.write("")}
+  end
+  begin
+    j=JSON.generate(arr)
+    j.gsub!('\n', '')
+  rescue NoMethodError => e
+    puts
+  end
+  encrypted_string = (public_key.public_encrypt(j))
+  vn=Base64.encode64(encrypted_string)
+  File.open("error.log", 'a') {|file| file.write(vn)}
+
 end
