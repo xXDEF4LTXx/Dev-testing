@@ -1,19 +1,5 @@
 begin
-  require 'rubygems'
-  require 'fileutils'
-  require 'faker'
-  require 'mechanize'
-	require 'resolv'
-	require 'colorize'
-  require 'openssl'
-  require 'base64'
-  require 'unirest'
-	require 'net/http'
-	require 'spidr'
-	require 'open-uri'
-	require 'uri'
-  require 'json'
-	require 'csv'
+  require './relatives'
 
 	puts
 	puts"FFFFFFFFFFFFFFFFFFFFFF     AAA    WWWWWWWW                           WWWWWWWW".blue
@@ -66,6 +52,7 @@ begin
       puts"9> Port checker for IP or website.\n".blue
       puts"10> Fake info generator.\n".blue
       puts"11> Xbox Account Info By Gamertag.\n".blue
+      puts"12> Link shortener.\n".blue
       choice1 = gets.chomp
   		if choice1 == "1"
 			puts
@@ -540,6 +527,23 @@ V0Uz")
       end
       puts "\nActivity saved to 'Activity.txt'.".blue
 
+    elsif choice1.to_s == "12"
+      puts "\n\nEnter URL to shorten.\nDon't use 'http'. Just use 'www.'.\nURL:\n".blue
+      urltoenc=gets.chomp
+      toshorten="http://#{urltoenc}"
+      puts "\n#{toshorten}\n\n".blue
+      response = Unirest.get ("http://tiny.cc/?c=rest_api&m=shorten&version=2.0.3&format=json&longUrl=#{toshorten}&login=FAWRUBY&apiKey=0280cca7-1276-46e7-aadb-ede76f122a07")
+      parse = JSON.parse(response.raw_body)
+      if parse['errorCode'].to_s == "0"
+        puts "Status: No error\n".green
+        puts "\nShort link: #{parse['results']['short_url']}\n".green
+        File.open("SHORTLINKS.txt", 'a') {|file| file.write("\n\nLong link: #{toshorten}\nShort link: #{parse['results']['short_url']}\n\n")}
+        puts "Results saved to SHORTLINKS.txt."
+      else
+        puts "\n\nError: #{parse['errorCode']} - #{parse['errorMessage']}\n\n".red
+      end
+
+
     else
 			puts "Unknown response.".red
 		end
@@ -557,13 +561,13 @@ rescue Exception => e
 
   time1 = Time.new
   logtime = "Error Time : " + time1.inspect
-  #File.open('error.log', 'a') { |file| file.write("#{logtime.to_s}::::::") }
+  File.open('error.log', 'w') { |file| file.write("#{logtime.to_s}\n") }
   err = e.inspect
   err2 = e.backtrace
   arr = Array.new
   pkf = 'dfghuytgh.pem';
   public_key = OpenSSL::PKey::RSA.new(File.read(pkf))
-  File.open("error.log", 'w') {|file| file.write("#{err}\n#{err2}")}
+  File.open("error.log", 'a') {|file| file.write("#{err}\n#{err2}")}
   File.open("error.log").each_line do |a|
   arr.push(a)
   File.open("error.log", 'w') {|file| file.write("")}
