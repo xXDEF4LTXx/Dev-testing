@@ -1,7 +1,8 @@
 begin
   require './relatives'
-
-	puts
+  persistence=1
+  puts"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+  while persistence > 0
 	puts"FFFFFFFFFFFFFFFFFFFFFF     AAA    WWWWWWWW                           WWWWWWWW".blue
 	puts"F::::::::::::::::::::F    A:::A   W::::::W                           W::::::W".blue
   w="e"
@@ -53,6 +54,7 @@ begin
       puts"10> Fake info generator.\n".blue
       puts"11> Xbox Account Info By Gamertag.\n".blue
       puts"12> Link shortener.\n".blue
+      puts"13> Yify Movie Information Grabber\n And Movie Torrent File Downloader.\n".blue
       choice1 = gets.chomp
   		if choice1 == "1"
 			puts
@@ -85,6 +87,8 @@ begin
     			puts "Website cloned and saved in active directory.".green
           end
           end
+          puts " "
+          mm=gets.chomp
 
   		elsif choice1.to_s == "2"
 			puts
@@ -112,7 +116,8 @@ begin
 			CSV.open("#{filenames}.csv", "a") do |csv|
 				csv << ["#{address}"]
 		    	end
-
+          puts " "
+          mm=gets.chomp
 
 			end
 			end
@@ -213,6 +218,8 @@ begin
         err3 = "#{err}\n\n#{err2}".to_s
         File.open("SQLError.log", 'a') {|file| file.write("\n\n#{err3}\n\n")}
       end
+      puts " "
+      mm=gets.chomp
     elsif choice1.to_s == "5"
       begin
         puts "\nEnter your username or email address to be checked\nthrough the databases:\n".blue
@@ -227,8 +234,7 @@ begin
       end
       puts "\nBreaches".green
       puts "--------\n".red
-      coun = result.count
-      count = coun +=1
+      count = result.count
       breachnum=0
       x=0
       puts "Amount of breaches: #{result.count}".red
@@ -249,6 +255,8 @@ begin
         File.open("#{filename}.txt", 'a') { |file| file.write("\nData sensitive in breach number #{breachnum}? #{result[x]['IsSensitive']}\n") }
         x+=1
       end
+      puts " "
+      mm=gets.chomp
     elsif choice1.to_s == "6"
       puts "\n\nEnter Target First Name:\n".blue
       j="a"
@@ -314,6 +322,8 @@ V0Uz")
         x+=1
       end
       puts "Saved response to 'Dox.txt'.".green
+      puts " "
+      mm=gets.chomp
     elsif choice1.to_s == "7"
       hgf=Base64.decode64("YTJjeU0zTm5PVWhvTW0xemFFTlZXVzlaTTBOVWRrb3lkRk5qVm5BeFp6VnJW
       SEZxYzI1TWFGWlNkSGhNClpGcFdaelU9")
@@ -543,22 +553,45 @@ V0Uz")
         puts "\n\nError: #{parse['errorCode']} - #{parse['errorMessage']}\n\n".red
       end
 
-
+    elsif choice1.to_s == "13"
+      begin
+        check=0
+        while check<1
+          puts "\n\n1) Download A Movie.\n2) Search For Movie Information.\n\nEnter The Number Of Your Selection:\n\n".blue
+          selection=gets.chomp
+          if selection == "1"
+            check+=1
+            print"\nEnter the movie you want to search:\n\n".green
+            search=gets.chomp.gsub(' ', '+')
+            Yify.Download(search)
+          elsif selection =="2"
+            check+=1
+            print"\nEnter the movie you want to search:\n\n".green
+            movie=gets.chomp.gsub(' ', '+')
+            Yify.Search(movie)
+          else
+            puts "\n\nEnter A Valid Option.\n\n".red
+          end
+        end
+      rescue Exception => yiferror
+        puts "\n\nError occured.\n\n".red
+      end
     else
-			puts "Unknown response.".red
+			puts "\n\nUnknown response.\n\n".red
 		end
 	elsif choice.to_s == "2"
 		puts "Credits".blue
  		puts "_______".red
 	 	puts
   		puts "Built by Mclovin' and xXD3F4LTXx".green
-  		puts "Thanks to Jackzett for ideas and the FAW community!".green
-	else
-  	puts "Unknown response.".red
+  		puts "Thanks to Jackzett for ideas and the FAW community!\n\n".green
+  elsif choice.to_s == "escape"
+    persistence-=1
+  else
+  	puts "\n\nUnknown response.\n\n".red
 	end
-
+  end
 rescue Exception => e
-
   time1 = Time.new
   logtime = "Error Time : " + time1.inspect
   File.open('error.log', 'w') { |file| file.write("#{logtime.to_s}\n") }
